@@ -1,16 +1,15 @@
 import React from "react";
 import ContactUs from "../components/contact-us/ContactUs";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Layout from "../components/layout/Layout";
 
 const ContactusPage = () => {
-  return (
-    <>
-      <Navbar />
-      <ContactUs />
-      <Footer />
-    </>
-  );
+   return (
+      <>
+         <Layout title="contact">
+            <ContactUs />
+         </Layout>
+      </>
+   );
 };
 
 export default ContactusPage;

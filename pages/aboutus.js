@@ -1,16 +1,14 @@
-import React from "react";
-import Aboutus from "../components/Aboutus";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Aboutus from "../components/about-us/Aboutus";
+import Layout from "../components/layout/Layout";
 
 const AboutUsPage = () => {
-  return (
-    <>
-      <Navbar />
-      <Aboutus />
-      <Footer />
-    </>
-  );
+   return (
+      <>
+         <Layout title="about">
+            <Aboutus />
+         </Layout>
+      </>
+   );
 };
 
 export default AboutUsPage;
