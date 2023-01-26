@@ -1,5 +1,5 @@
-import http from "./httpServer";
+import callApi from "./callApi";
 
-export const getMenu = () => {
-  return http.get("/menu");
+export const getMenu = (resolvedUrl) => {
+   return callApi().get(resolvedUrl);
 };

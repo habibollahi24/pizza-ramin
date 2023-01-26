@@ -1,90 +1,89 @@
-import { useFormik } from "formik";
-import * as yup from "yup";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { contactusData } from "../../server/contactusData";
+import { ValidationsErrorFields } from "./../../server/callApi";
 
 const ContactUsForm = () => {
-   const onSubmit = async (values, { resetForm }) => {
+   const [name, setName] = useState("");
+   const [email, setEmail] = useState("");
+   const [subject, setSubject] = useState("");
+   const [text, setText] = useState("");
+   const [loading, setLoading] = useState(false);
+
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      if (!name || !email || !subject || !text) {
+         toast.error("پر کردن موارد الزامیست.");
+         setLoading(false);
+         return;
+      }
+
       try {
-         const { data } = await contactusData(values);
-         toast.success("پیغامتان ارسال شد", { position: "bottom-right" });
-         resetForm({ values: "" });
-         resetForm({ errors: "" });
-      } catch (err) {
-         resetForm({ values: "" });
-         resetForm({ errors: "" });
+         await contactusData({ name, email, text, subject });
+         toast.success("پیغامتان ارسال شد");
+         setName("");
+         setEmail("");
+         setSubject("");
+         setText("");
+      } catch (error) {
+         if (error instanceof ValidationsErrorFields) {
+            Object.values(error.errorMessages).map((val) => {
+               val.map((err) => {
+                  toast.error(err);
+               });
+            });
+         }
+      } finally {
+         setLoading(false);
       }
    };
-
-   const formik = useFormik({
-      initialValues: {
-         name: "",
-         email: "",
-         subject: "",
-         text: "",
-      },
-      validateOnMount: true,
-      onSubmit,
-
-      validationSchema: yup.object({
-         name: yup.string().required("لطفا نام خود را وارد کنید"),
-         email: yup
-            .string()
-            .required("لطفا ایمیل خود را وارد کنید")
-            .email("فرمت ایمیل نادرست است"),
-         subject: yup.string().required("لطفا موضوع خود را وارد کنید"),
-         text: yup.string().required("لطفا متن خود را وارد کنید"),
-      }),
-   });
 
    return (
       <div className="md:p-4 order-3 md:order-1">
          <div className="text-title mb-10 text-center  ">
             با ما در ارتباط باشید.
          </div>
-         <form onSubmit={formik.handleSubmit} className="space-y-4">
+         <form onSubmit={handleSubmit} className="space-y-4">
             <input
                className="primary-field"
                type="text"
                name="name"
-               {...formik.getFieldProps("name")}
                placeholder="نام"
+               value={name}
+               onChange={(e) => setName(e.target.value)}
             />
-            {formik.errors.name && formik.touched.name && (
-               <p className="error">{formik.errors.name}</p>
-            )}
+
             <input
                className="primary-field"
                type="text"
                name="email"
-               {...formik.getFieldProps("email")}
                placeholder="ایمیل"
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
             />
-            {formik.errors.email && formik.touched.email && (
-               <p className="error">{formik.errors.email}</p>
-            )}
+
             <input
                className="primary-field"
                type="text"
                name="subject"
-               {...formik.getFieldProps("subject")}
                placeholder="موضوع پیام"
+               value={subject}
+               onChange={(e) => setSubject(e.target.value)}
             />
-            {formik.errors.subject && formik.touched.subject && (
-               <p className="error">{formik.errors.subject}</p>
-            )}
+
             <textarea
                className="primary-field h-24"
                name="text"
-               {...formik.getFieldProps("text")}
                placeholder="متن پیام"
+               value={text}
+               onChange={(e) => setText(e.target.value)}
             ></textarea>
-            {formik.errors.text && formik.touched.text && (
-               <p className="error">{formik.errors.text}</p>
-            )}
+
             <button
-               disabled={!(formik.isValid && formik.dirty)}
-               className="submit-form-btn w-full md:w-auto"
+               className={`submit-form-btn w-full md:w-auto ${
+                  loading ? "opacity-25" : ""
+               } `}
                type="submit"
             >
                ارسال پیغام

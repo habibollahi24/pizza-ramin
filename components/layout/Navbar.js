@@ -4,23 +4,28 @@ import { useRouter } from "next/router";
 
 import { HiShoppingCart } from "react-icons/hi";
 import { HiX, HiMenu } from "react-icons/hi";
+import { useAuth } from "./../../context/AuthContext";
+
+const links = [
+   { id: 1, path: "/", name: "خانه" },
+   { id: 2, path: "/menu", name: "منو" },
+   { id: 3, path: "/aboutus", name: "درباره ما" },
+   { id: 4, path: "/contactus", name: "ارتباط باما" },
+];
 
 const Navbar = () => {
-   const links = [
-      { id: 1, path: "/", name: "خانه" },
-      { id: 2, path: "/menu", name: "منو" },
-      { id: 3, path: "/aboutus", name: "درباره ما" },
-      { id: 4, path: "/contactus", name: "ارتباط باما" },
-   ];
    const { pathname } = useRouter();
+   const { user } = useAuth();
 
    return (
       <div className=" fixed md:static w-full z-[10000] top-0  right-0 md:mt-3">
          <div className=" my-container  text-white flex  items-center justify-between bg-slate-700 p-6  md:rounded-2xl  shadow-md relative">
             {/* logo */}
-            <div className="align-middle text-white text-lg md:text-2xl">
-               Pizza-Ramin
-            </div>
+            <Link href="/">
+               <a className="align-middle text-white text-lg md:text-2xl ">
+                  Pizza-Ramin
+               </a>
+            </Link>
             <DesctopNav pathname={pathname} links={links} />
             {/* cart */}
             <div className="flex items-center justify-around px-5 flex-grow md:flex-grow-0 md:px-0  md:gap-x-5">
@@ -30,7 +35,15 @@ const Navbar = () => {
                      5
                   </div>
                </div>
-               <button className="btn-primary ">ورود</button>
+               {!user ? (
+                  <Link href="/auth/login">
+                     <button className="btn-primary ">ورود</button>
+                  </Link>
+               ) : (
+                  <Link href="/profile">
+                     <button className="btn-primary ">پروفایل</button>
+                  </Link>
+               )}
             </div>
             <MobileNav pathname={pathname} links={links} />
          </div>

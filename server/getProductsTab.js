@@ -1,5 +1,5 @@
-import http from "./httpServer";
+import callApi from "./callApi";
 
 export const getProductsTab = () => {
-  return http.get("/products/products-tabs");
+   return callApi().get("/products/products-tabs");
 };

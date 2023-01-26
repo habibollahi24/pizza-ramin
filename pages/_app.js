@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
+import AuthContext from "../context/AuthContext";
 
 function MyApp({ Component, pageProps }) {
    const [loading, setLoading] = useState(false);
@@ -21,11 +22,11 @@ function MyApp({ Component, pageProps }) {
    }, [router.events]);
 
    return (
-      <>
-         {loading && <Loading />}
+      <AuthContext>
+         {loading && <Loading position="absolute" />}
          <Component {...pageProps} />
-         <ToastContainer />
-      </>
+         <ToastContainer position="bottom-center" />
+      </AuthContext>
    );
 }
 

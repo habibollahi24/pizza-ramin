@@ -6,7 +6,7 @@ const Layout = ({ children, title }) => {
    return (
       <>
          <Head>
-            <title>Pizza-Ramin| {title} </title>
+            <title>{`Pizza-Ramin| ${title}`} </title>
          </Head>
          <Header />
          {children}

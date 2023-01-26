@@ -10,7 +10,7 @@ import { getProductsTab } from "../server/getProductsTab";
 export default function Home({ productTab, productsCategory }) {
    return (
       <>
-         <Layout title="home">
+         <Layout title="Home">
             <Hero />
             <Features />
             <Products

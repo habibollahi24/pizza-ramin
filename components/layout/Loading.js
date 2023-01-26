@@ -1,6 +1,6 @@
-const Loading = () => {
+const Loading = ({ position }) => {
    return (
-      <div className="absolute top-5 right-5 z-[99999999999]">
+      <div className={`${position} top-5 right-5 z-[99999999999]`}>
          <div className="animate-bounce">
             <div className="w-8 h-8 bg-red-400 mx-1 rounded-full"></div>
          </div>
